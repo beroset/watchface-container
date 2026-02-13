@@ -1,0 +1,10 @@
+#!/bin/bash
+podman run -itv "${PWD}":/mnt/host:z \
+    --rm \
+    -e XDG_RUNTIME_DIR=/tmp \
+    -e WAYLAND_DISPLAY=$WAYLAND_DISPLAY \
+    -e QT_QPA_PLATFORM=wayland \
+    -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY  \
+    --userns keep-id \
+    --security-opt label=type:container_runtime_t \
+    watchface $*
