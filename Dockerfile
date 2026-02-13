@@ -27,19 +27,24 @@ RUN cmake --build desktop -j -t install
 FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y git whiptail zenity qmlscene \
   qml-module-qtquick-layouts qml-module-qt-labs-settings qml-module-qtquick-dialogs \
-  qml-module-qtquick-controls2 qml-module-qtgraphicaleffects qml-module-qtquick-shapes
+  qml-module-qtquick-controls2 qml-module-qtgraphicaleffects qml-module-qtquick-shapes \
+  imagemagick
 COPY --from=builder /usr/lib/x86_64-linux-gnu/qt5/qml/org /usr/lib/x86_64-linux-gnu/qt5/qml/org/
 RUN git clone https://github.com/beroset/unofficial-watchfaces.git
 WORKDIR /unofficial-watchfaces
 RUN git checkout refactor-dir-handling
 
-ARG xdgcachehome=/xdgcache
-ARG fontconfigpath=/.config/fontconfig
+ARG xdgcachehome=/unofficial-watchfaces/xdgcache
+ARG fontconfigprefix=/.config
+ARG fontconfigpath=$fontconfigprefix/fontconfig
 
 RUN install -d -m 1777 $xdgcachehome
 RUN install -d -m 1777 $fontconfigpath
 
 ENV XDG_CACHE_HOME=$xdgcachehome
 ENV FONTCONFIG_PATH=$fontconfigpath
+ENV XDG_CONFIG_HOME=$fontconfigprefix
+ENV PATH="/unofficial-watchfaces:$PATH"
 
-CMD ["/watchface"]
+WORKDIR /mnt/host
+CMD ["/unofficial-watchfaces/watchface", "-g"]
