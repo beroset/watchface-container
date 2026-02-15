@@ -35,6 +35,18 @@ We can then test the new watch face:
 ../tryme watchface test decimal2
 ```
 
+### Using `adb` via USB
+You need to have `adb` installed on the host computer, since that is where the server
+runs that actually connects to your watch. Refer to `tryme-adb` on how to start the 
+container with the ability to connect to the host's adb server. Continuing the example 
+from above, you can use it like this to deploy the cloned and potentially edited 
+`decimal2` watchface to your watch (still inside the `test` directory):
+
+```
+../tryme-adb watchface -a deploy decimal2 
+```
+
+
 ## About wallpaper
 By default, the container will look for two files "background.jpg" and "background-round.jpg" to use as 
 wallpaper behind the watchface for both testing and for creating thumbnail images for new watchfaces.
