@@ -46,6 +46,11 @@ from above, you can use it like this to deploy the cloned and potentially edited
 ../tryme-adb watchface -a deploy decimal2 
 ```
 
+***Note:** This (re-)starts `adb` with the `-a` option, causing it to listen on all network
+interfaces, not just `localhost`. As this enables any device in your local network to
+communicate with your adb server, you should only do this if you know and trust all
+devices in your local network.*
+
 
 ## About wallpaper
 By default, the container will look for two files "background.jpg" and "background-round.jpg" to use as 
