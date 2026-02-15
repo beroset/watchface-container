@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# ensure adb server is running and listening on all network interfaces
+adb kill-server > /dev/null 2>&1 && adb -a -P 5037 nodaemon server start > /dev/null 2>&1 &
+
+sleep 1 # without this, the script inside the container might get executed before the server is fully started
+
+docker run -itv "${PWD}":/mnt/host:z \
+    --rm \
+    -e XDG_RUNTIME_DIR=/tmp \
+    -e WAYLAND_DISPLAY=$WAYLAND_DISPLAY \
+    -e QT_QPA_PLATFORM=wayland \
+    --add-host=host.docker.internal:host-gateway \
+    -e ANDROID_ADB_SERVER_ADDRESS=host.docker.internal \
+    -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY  \
+    --user $(id -u):$(id -g) \
+    --security-opt label=type:container_runtime_t \
+    watchface $*

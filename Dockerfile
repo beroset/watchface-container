@@ -28,7 +28,7 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y git whiptail zenity qmlscene \
   qml-module-qtquick-layouts qml-module-qt-labs-settings qml-module-qtquick-dialogs \
   qml-module-qtquick-controls2 qml-module-qtgraphicaleffects qml-module-qtquick-shapes \
-  imagemagick
+  imagemagick android-tools-adb
 COPY --from=builder /usr/lib/x86_64-linux-gnu/qt5/qml/org /usr/lib/x86_64-linux-gnu/qt5/qml/org/
 RUN git clone https://github.com/beroset/unofficial-watchfaces.git
 WORKDIR /unofficial-watchfaces
